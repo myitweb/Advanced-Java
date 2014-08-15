@@ -1,0 +1,82 @@
+/*
+Develop a JSP application to authenticate user login as per registration details. If login succeeds forward user to index page otherwise show login failure message. 
+*/
+
+
+Index.jsp
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>User Login</h1>
+        <form action="Valid.jsp">
+            Enter User Name : <input type="textbox" name="txtname"><br><br>
+            Enter Password : <input type="password" name="txtpass"><br><br>
+
+            <input type="submit" value="Login">
+            <input type="reset" name="Reset">
+
+        </form>
+    </body>
+</html>
+
+Valid.jsp
+<%@ page import = "java.sql.*"%>
+          <%! String pass=""; %>
+       <%
+	try
+	{
+                Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/LoginDB","viva","viva");
+		Statement stmt=con.createStatement();
+                String a=request.getParameter("txtname");
+                String b=request.getParameter("txtpass");
+               // System. out.println(a);
+                // System. out.println(b);
+               ResultSet rs=stmt.executeQuery("select password from UserLogin where name='"+ a +"'");
+
+               while(rs.next())
+                   {
+                    pass = rs.getString(1);
+                 }
+
+                 if (b.equals(pass))
+                     {%>
+
+                     <jsp:forward page="ValidUser.jsp"/>
+
+                    <% }
+                 else
+                     {
+                      System.out.println("<h1> Invalid user</h1>") ;
+                     }
+
+	}
+	catch(Exception e)
+	{
+		out.println(e.getMessage());
+	}
+%>
+   
+    </body>
+</html>
+
+
+
+
+Validuser.jsp
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Valid User</h1>
+    </body>
+</html>
+
+

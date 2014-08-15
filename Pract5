@@ -1,0 +1,71 @@
+/* Servlet Calulator */
+
+
+
+HTML Code:
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Calculator Aplication</h1>
+        <form method="Post" action="Calculator">
+            <label for="no1">Enter number 1</label>
+            <input type="text" id="no1"/><br><br>
+            <label for="no2">Enter number 2</label>
+            <input type="text" id="no2" name="no2"/><br><br>
+            <select name="opr">
+                <option> Addition </option>
+                <option> Subtraction </option>
+                <option> Multiplication </option>
+                <option> Division </option>
+            </select><br><br>
+            <input type="submit" value="Display Answer"/>
+            <input type="reset" value="Reset Values"/>
+        </form>
+    </body>
+</html>
+
+Sevlet Code:
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Calculator extends HttpServlet {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Calculator</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            float result=0;
+            float a=Float.parseFloat(request.getParameter("no1"));
+            float b=Float.parseFloat(request.getParameter("no2"));
+            String opr=request.getParameter("opr");
+            if (opr.equals("Addition"))
+                result=a+b;
+            else if (opr.equals("Subtraction"))
+                result=a-b;
+            else if (opr.equals("Multiplication"))
+                result=a*b;
+            else if (opr.equals("Division"))
+                result=a/b;
+            out.println("<h1>The result of " +opr+" of "+a+" and "+b+" = "+result+"</h1>");
+            //out.println("<h1>Servlet Calculator at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally { 
+            out.close();
+        }
+    } 

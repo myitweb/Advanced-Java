@@ -1,0 +1,50 @@
+HTML CODE:
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>A Welcome Web Application</h1>
+        <form method="POST" action="WelcomeServlet">
+            <label for="Name" title="Enter the Name">Name: </label>
+            <input type="text" id="textName" name="textname"/>
+            <br><br>
+            <input type="submit" value="Submit"/>
+        </form>
+    </body>
+</html>
+
+
+Servlet Code:
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class WelcomeServlet extends HttpServlet {
+   
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet WelcomeServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            //out.println("<h1>Welcome " + request.getContextPath () + "</h1>");
+            out.println("<h1>Welcome " + request.getParameter ("txtname")+ "</h1>");
+            out.println("<a href='index.jsp'> Click here to return to Home page</a>");
+            out.println("</body>");
+            out.println("</html>");
+
+        } finally { 
+            out.close();
+        }
+    } 

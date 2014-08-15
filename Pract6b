@@ -1,0 +1,61 @@
+/*
+Develop a jsp application to accept registration details from user and store into the database table.
+*/
+
+JSP code:
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <form  action="jspcheck.jsp">
+            username:&nbsp;<input type="text" name="t1"><br>
+            password:&nbsp;<input type="text" name="t2"><br>
+            email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t3"><br>
+            <input type="submit" value="login">
+            <input type="reset" value="reset">
+        </form>
+    </body>
+</html>
+
+
+
+1) JSP code:
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <%@page import="java.sql.*" %>
+        <%
+        try
+                {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost/logindb","viva","viva");
+            PreparedStatement ps=con.prepareStatement("insert into login values(?,?,?)");
+            ps.setString(1,request.getParameter("t1"));
+            ps.setString(2,request.getParameter("t2"));
+            ps.setString(3,request.getParameter("t3"));
+            ps.executeUpdate();
+                }
+        catch(Exception e)
+                {
+            out.println(e.getMessage());
+                }
+        %>
+        Record inserted successfully!!!!!!!!!!!
+    </body>
+</html>

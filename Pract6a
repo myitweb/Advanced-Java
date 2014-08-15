@@ -1,0 +1,304 @@
+/*
+Write a java program connects to database using JDBC and perform all the operations like creating a table,inserting records in the table,modifying records in the table and deleting records from the table,viewing metadata info.
+*/
+
+Code Snippet:-
+
+import java.io.*;
+import java.sql.*;
+public class JDBCProgram1
+{
+	static int opt,age,phn;
+	static String name,c;
+	static BufferedReader br;
+	static Connection con;
+	static PreparedStatement pstmt1,pstmt2,pstmt3,pstmt4;
+	static ResultSet rs1,rs2;
+	
+	public static void main(String args[])
+	{
+		try
+		{
+			br=new BufferedReader(new InputStreamReader(System.in));
+			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+			con=DriverManager.getConnection("jdbc:odbc:mmydsn1");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		do
+		{
+			System.out.println("Enter your choice");
+			System.out.println("1.Create Table");
+			System.out.println("2.Insert a Record");
+			System.out.println("3.Update a Record");
+			System.out.println("4.Delete a Record");
+			System.out.println("5.View all Records");
+			System.out.println("6.View a specific Record");
+			System.out.println("7.Delete a Table");
+			System.out.println("8.View ResultSet metadata");
+			System.out.println("9.View Database metadata");
+			System.out.println("10.Exit");
+			
+			try
+			{
+				opt=Integer.parseInt(br.readLine());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			switch(opt)
+			{
+				case 1:
+					Create();
+					break;
+				case 2:
+					CallName();
+					Call();
+					Insert();
+					break;
+				case 3:
+					CallName();
+					Call();
+					Update();
+					break;
+				case 4:
+					CallName();
+					Delete();
+					break;
+				case 5:
+					viewAll();
+					break;
+				case 6:
+					CallName();
+					viewOne();
+					break;
+				case 7:
+					//DeleteTable();
+					break;
+				case 8:
+					RSMeta();
+					break;
+				case 9:
+					DBMeta();
+					break;
+				case 10:
+					System.exit(0);
+					break;
+				default:
+					System.out.println("Wrong");
+			}
+		}while(opt!=10);
+        }
+		public static void CallName()
+		{
+			try
+			{
+				System.out.println("Enter the name of student");
+				name=br.readLine();	
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		public static void Call()
+		{
+			try
+			{
+				System.out.println("\nEnter the age of student:\t");
+				age=Integer.parseInt(br.readLine());
+				System.out.println("\nEnter the phone no of student");
+				phn=Integer.parseInt(br.readLine());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();	
+			}
+		}
+		public static void Create()
+		{
+			try
+			{
+				Statement stmt=con.createStatement();
+				int i=stmt.executeUpdate("create table Student_details(Stud_name char(30),age integer,phn_num integer)");
+				if(i==-1)
+				{
+					System.out.println("Table Created");
+				}
+				else
+				{
+					System.out.println("Table cant be created");	
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void Insert()
+		{
+			try
+			{
+				pstmt1=con.prepareStatement("insert into Student_details values(?,?,?)");
+				pstmt1.setString(1,name);
+				pstmt1.setInt(2,age);
+				pstmt1.setInt(3,phn);
+				int count1=pstmt1.executeUpdate();
+				if(count1==1)
+				{
+					System.out.println("\nData inserted successfully");
+				}
+				else
+				{
+					System.out.println("Data cant be inserted");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void Update()
+		{
+			try
+			{
+				pstmt2=con.prepareStatement("Update Student_details set age=?,phn_num=? where Stud_name=?");
+				pstmt2.setInt(1,age);
+				pstmt2.setInt(2,phn);
+				pstmt2.setString(3,name);
+				int count2=pstmt2.executeUpdate();
+				if(count2==1)
+				{
+					System.out.println("\nData Modified Successfully");
+				}
+				else
+				{
+					System.out.println("Data cant be modified");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void Delete()
+		{
+			try
+			{
+				pstmt3=con.prepareStatement("Delete from Student_details where stud_name=?");
+				pstmt3.setString(1,name);
+				int count2=pstmt3.executeUpdate();
+				if(count2==1)
+				{
+					System.out.println("\n Data deleted Successfully");
+				}
+				else
+				{
+					System.out.println("\n Data cant be deleted");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void viewOne()
+		{
+			try
+			{
+				pstmt4=con.prepareStatement("Select * from Student_details where stud_name=?");
+				pstmt4.setString(1,name);
+				rs2=pstmt4.executeQuery();
+				while(rs2.next())
+				{
+					System.out.println("Age is:"+rs2.getInt("age"));
+					System.out.println("Phone number is:"+rs2.getInt("phn_num"));
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void viewAll()
+		{
+			try
+			{
+				Statement st=con.createStatement();
+				rs1=st.executeQuery("Select * from Student_details");
+				while(rs1.next())
+				{
+					System.out.println("Name is:"+rs1.getString("stud_name"));
+					System.out.println("Age is:"+rs1.getInt("Age"));
+					System.out.println("Phn no is:"+ rs1.getInt("phn_num"));
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void DeleteTable()	
+		{
+			try
+			{
+				Statement st=con.createStatement();
+				int i=st.executeUpdate("Drop table Student_details");
+				if(i==1)
+				{
+					System.out.println("Table deleted Successfully");
+				}
+				else
+				{
+					System.out.println("Table cant be deleted");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void DBMeta()
+		{
+			try
+			{
+				DatabaseMetaData dbmd=con.getMetaData();
+				System.out.println("The name of the database product is= "+dbmd.getDatabaseProductName());
+				System.out.println("The version of the database is= "+dbmd.getDatabaseProductVersion());
+				System.out.println("The name of the driver is= "+dbmd.getDriverName());
+				System.out.println("The version of the driver is= "+dbmd.getDriverVersion());
+				System.out.println("The jdbc url is= "+dbmd.getURL());
+				System.out.println("The username of database is= "+dbmd.getUserName());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public static void RSMeta()
+		{
+			try
+			{
+				Statement st=con.createStatement();
+				ResultSet rs=st.executeQuery("Select * from Student_details");
+				ResultSetMetaData meta=rs.getMetaData();
+				int no=meta.getColumnCount();
+				System.out.println("no. of columns="+no);
+				for(int i=1;i<=no;i++)
+				{
+					System.out.println("Column name= "+meta.getColumnName(i)+" of data type "+meta.getColumnTypeName(i)+" from table "+meta.getTableName(i));
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+

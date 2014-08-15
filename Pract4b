@@ -1,0 +1,75 @@
+/*
+Develop Simple Servlet Question Answer Application to demonstrate use of HttpServletRequest and HttpServletResponse interfaces.
+*/
+
+HTML CODE:
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <form method="post" action="p7">
+        <h1>My paper</h1>
+           <label>Q. 1) Which is a valid keyword in java?</label><br>
+            <input type="radio" name="r1" value ="int"/>interface
+            <input type="radio" name="r1" value ="F"/>Float
+            <input type="radio" name="r1" value ="s"/>string
+            <input type="radio" name="r1" value ="all"/>All of the above<br><br>
+            <label>Q. 2) What is sent to the user via HTTP, invoked using the HTTP protocol on the user's computer, and run on the user's computer as an application?</label><br>
+            <input type="radio" name="r2" value="app"/>A Java application
+            <input type="radio" name="r2" value="applet"/>A Java applet
+            <input type="radio" name="r2" value="servlet"/>A Java servlet
+            <input type="radio" name="r2" value="none"/>None of the above <br><br>
+        
+                    <label>Q. 3) JDBC stands for:</label><br>
+            <input type="radio" name="r3" value="jdbc"/>Java Database Connectivity
+            <input type="radio" name="r3" value="jdbc1"/>Java Database Components
+            <input type="radio" name="r3" value="jdbc2"/>Java Database Control
+            <input type="radio" name="r3" value="none"/>None of the above <br><br>
+        
+             <label>Q. 4) What is bytecode?</label><br>
+            <input type="radio" name="r4" value="msc"/>Machine-specific code
+            <input type="radio" name="r4" value="jcn"/>Java code
+            <input type="radio" name="r4" value="mic"/>Machine-independent code
+            <input type="radio" name="r4" value="none"/>None of the above <br><br>
+           <input type="submit" value="Display Result"/>
+            <input type="reset" value="Reset Values"/>
+        </form>
+    </body>
+</html>
+
+
+SERVLET PROGRAM CODE:
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet p7</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            if(request.getParameter("r1").equals("int")&&request.getParameter("r2").equals("app")&&request.getParameter("r3").equals("jdbc")&&request.getParameter("r4").equals("mic"))
+                  out.println("You are Pass");
+            else
+                   out.println("Better luck Next time");
+         
+            out.println("</body>");
+            out.println("</html>");
+            
+        } finally { 
+            out.close();
+        }
+    }
+
