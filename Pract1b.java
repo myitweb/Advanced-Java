@@ -12,7 +12,7 @@ public class Pract2 extends JFrame implements ListSelectionListener
 {
 	JLabel jl1;
 	JList list;
-	JTextFieldjtf;
+	JTextField jtf;
 	String name[]={"BOOKS","PEN","PENCIL","SHARPENER","SCALE"};
 
 	public Pract2()
